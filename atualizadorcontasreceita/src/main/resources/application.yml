@@ -1,0 +1,21 @@
+
+server:
+  port: 8082
+  servlet:
+    context-path: /atualizadorcontasreceita
+  
+spring:
+  application:
+    name: atualizadorcontasreceita
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+
+sincronizador:
+  rabbitmq:
+    exchange: sincronizador.exchange
+    queue: sincronizador.conta.queue  
+    
+      

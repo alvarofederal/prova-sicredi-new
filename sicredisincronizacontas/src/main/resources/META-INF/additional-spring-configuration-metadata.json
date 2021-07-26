@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "sicredisincronizacontas.rabbitmq.exchange",
+    "type": "java.lang.String",
+    "description": "A description for 'sicredisincronizacontas.rabbitmq.exchange'"
+  },
+  {
+    "name": "sicredisincronizacontas.rabbitmq.routingkey",
+    "type": "java.lang.String",
+    "description": "A description for 'sicredisincronizacontas.rabbitmq.routingkey'"
+  },
+  {
+    "name": "sincronizador.rabbitmq.exchange",
+    "type": "java.lang.String",
+    "description": "A description for 'sincronizador.rabbitmq.exchange'"
+  },
+  {
+    "name": "sincronizador.rabbitmq.routingkey",
+    "type": "java.lang.String",
+    "description": "A description for 'sincronizador.rabbitmq.routingkey'"
+  }
+]}
