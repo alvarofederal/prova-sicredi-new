@@ -21,6 +21,10 @@ public class Utils {
 		return saldoFormatado;
 	}
 
+	public static String resultado(Boolean retorno) {
+		return retorno ? "Valida" : "Invalida";
+	}
+
 	public static Boolean checarFDS() {
 		Calendar data = Calendar.getInstance();
 		data.setTime(new Date());

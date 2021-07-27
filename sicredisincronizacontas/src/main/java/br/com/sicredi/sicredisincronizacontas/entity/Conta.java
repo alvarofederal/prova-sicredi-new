@@ -21,8 +21,6 @@ public class Conta implements Serializable{
 	
 	private String status;
 	
-	private Boolean statusRetornoReceita;
-	
     public Conta() {
 
     }
@@ -32,6 +30,5 @@ public class Conta implements Serializable{
         this.conta = conta;
         this.saldo = saldo;
         this.status = status;
-        this.statusRetornoReceita = statusRetornoReceita;
     }
 }

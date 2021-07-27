@@ -1,0 +1,7 @@
+2021-07-27 13:59:53.201  INFO 2972 --- [main] .SicredisincronizacontasApplicationTests : Starting SicredisincronizacontasApplicationTests using Java 11.0.12 on DESKTOP-13BNAHR with PID 2972 (started by alvar in D:\ESTUDOS BACK END\desafios\sicredisincronizacontas)
+2021-07-27 13:59:53.204  INFO 2972 --- [main] .SicredisincronizacontasApplicationTests : No active profile set, falling back to default profiles: default
+2021-07-27 13:59:56.026  INFO 2972 --- [main] o.s.a.r.c.CachingConnectionFactory       : Attempting to connect to: [localhost:5672]
+2021-07-27 13:59:56.103  INFO 2972 --- [main] o.s.a.r.c.CachingConnectionFactory       : Created new connection: rabbitConnectionFactory#5e230fc6:0/SimpleConnection@bb6f3f7 [delegate=amqp://admin@127.0.0.1:5672/, localPort= 50800]
+2021-07-27 13:59:56.231  INFO 2972 --- [main] .SicredisincronizacontasApplicationTests : Started SicredisincronizacontasApplicationTests in 3.398 seconds (JVM running for 4.369)
+2021-07-27 13:59:56.673  INFO 2972 --- [SpringApplicationShutdownHook] o.s.a.r.l.SimpleMessageListenerContainer : Waiting for workers to finish.
+2021-07-27 13:59:57.244  INFO 2972 --- [SpringApplicationShutdownHook] o.s.a.r.l.SimpleMessageListenerContainer : Successfully waited for workers to finish.

@@ -1,14 +1,11 @@
 package br.com.sicredi.sicredisincronizacontas;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
@@ -29,8 +26,8 @@ import br.com.sicredi.sicredisincronizacontas.exception.ResourceForbiddenExcepti
 import br.com.sicredi.sicredisincronizacontas.service.ReceitaService;
 import br.com.sicredi.sicredisincronizacontas.utils.Utils;
 
-//Configuração de inicialização do Microserviço de Envio de Dados para a Receita Federal 
-//e configuração para a dispensa de utilização de banco de dados
+//Configuracao de inicializacao do Microserviço de Envio de Dados para a Receita Federal 
+//e configuracao para a dispensa de utilizacao de banco de dados
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class,
 		DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class })
@@ -46,43 +43,51 @@ public class SicredisincronizacontasApplication {
 	}
 
 	public static void main(String[] args) {
-		log.info("Inicializando aplicação...");
+		log.info("Inicializando o sistema de Solicitacao de Sincronizacao de Contas...");
 		SpringApplication.run(SicredisincronizacontasApplication.class, args);
-
-		// Metodo responsável por verificar se é dia util ou final de semana
-		if (!Utils.checarFDS()) {
-			log.info("Final de Semana - Não autorizada a execução da Sincronização com a Receita Federal!");
-			new ResourceForbiddenException(
-					"Final de Semana - Não autorizada a execução da Sincronização com a Receita Federal!");
-		} else {
-			// Nome do arquivo recebido pela retaguarda do SICREDI
-			String csvFileName = "arquivo_receita.csv";
-			try {
-				for (Conta conta : leitorArquivoCSV(csvFileName)) {
-					validacaoReceitaFederal(conta);
+		String[] caminho;
+		caminho = args[0].toString().split(",");
+		File file = new File(caminho[0]);
+		log.info("Buscando o arquivo no caminho: " +caminho[0]);
+		if (args.length > 0) {
+			// Metodo responsável por verificar se é dia util ou final de semana
+			if (!Utils.checarFDS()) {
+				log.info("Final de Semana - Nao autorizada a execucao da Sincronizacao com a Receita Federal!");
+				new ResourceForbiddenException("Final de Semana - Não autorizada a execucao da Sincronizacao com a Receita Federal!");
+			} else {
+				// Nome do arquivo recebido pela retaguarda do SICREDI
+				String csvFileName = file.getName();
+				try {
+					for (Conta conta : leitorArquivoCSV(csvFileName)) {
+						validacaoReceitaFederal(conta);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				} catch (RuntimeException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			} catch (RuntimeException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
+		}else {
+			log.info("Informar um arquivo .csv, com os campos agencia, conta, saldo, status, e seu caminho dentro dos diretorios do windows");
 		}
-
-		log.info("Finalizando aplicação...");
+		log.info("Finalizando...");
+		log.info("Saindo do o sistema de Solicitacao de Sincronizacao de Contas...");
+		return;
 	}
 
-	// Metodo responsável pela validação das contas junto a Receita Federal
+	// Metodo responsável pela validacao das contas junto a Receita Federal
 	public static void validacaoReceitaFederal(Conta conta) throws InterruptedException {
 		// Metodo responsável pelo envio dos dados para a Exchange
 		receitaService.sendMessage(conta);
 		log.info("Enviando a Conta " + conta.getConta() + " à Receita Federal! Aguarde o retorno do Status!");
 	}
 
-	// Metodo responsável pela leitura de um arquivo CSV instalado na raiz do projeto
+	// Metodo responsável pela leitura de um arquivo CSV instalado na raiz do
+	// projeto
 	static List<Conta> leitorArquivoCSV(String csvFileName) throws IOException {
 		List<Conta> listaContas = new ArrayList<Conta>();
 		log.info("Iniciando a leitura do arquivo .csv...");
@@ -102,5 +107,4 @@ public class SicredisincronizacontasApplication {
 		log.info("Finalizando a leitura do arquivo .csv...");
 		return listaContas;
 	}
-
 }

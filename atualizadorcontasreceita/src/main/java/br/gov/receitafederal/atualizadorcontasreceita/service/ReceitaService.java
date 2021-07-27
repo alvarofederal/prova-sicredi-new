@@ -5,8 +5,12 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.gov.receitafederal.atualizadorcontasreceita.config.message.AtualizadorContaSendMessage;
+import br.gov.receitafederal.atualizadorcontasreceita.entity.Conta;
+import br.gov.receitafederal.atualizadorcontasreceita.entity.ContaResultado;
 import br.gov.receitafederal.atualizadorcontasreceita.exception.ResourceInternalServerErrorException;
 import br.gov.receitafederal.atualizadorcontasreceita.exception.ResourceTimeOutException;
 
@@ -16,7 +20,14 @@ import br.gov.receitafederal.atualizadorcontasreceita.exception.ResourceTimeOutE
 @Service
 public class ReceitaService {
 
-	private static Logger log = LoggerFactory.getLogger(ReceitaService.class);
+	private static Logger logger = LoggerFactory.getLogger(ReceitaService.class);
+	
+	private final AtualizadorContaSendMessage contaSendMessage;
+
+	@Autowired
+	public ReceitaService(AtualizadorContaSendMessage contaSendMessage) {
+		this.contaSendMessage = contaSendMessage;
+	}
 
 	// Esta é a implementação interna do "servico" do banco central. Veja o código
 	// fonte abaixo para ver os formatos esperados pelo Banco Central neste cenário.
@@ -25,14 +36,13 @@ public class ReceitaService {
 
 		// Formato agencia: 0000
 		if (agencia == null || agencia.length() != 4) {
-			log.info("A Agência " + agencia + " informada é inválida! - Error 500");
+			logger.info("A Agencia " + agencia + " informada e invalida!");
 			return false;
 		}
 
 		// Formato conta: 000000
 		if (conta == null || conta.length() != 6) {
-			log.info("A Conta " + conta + " informada é inválida! - Error 500");
-			new ResourceInternalServerErrorException("A Conta " + conta + " informada está com formato inválido!");
+			logger.info("A Conta " + conta + " informada e invalida!");
 			return false;
 		}
 
@@ -44,8 +54,7 @@ public class ReceitaService {
 		tipos.add("P");
 
 		if (status == null || !tipos.contains(status)) {
-			log.info("O Status " + status + " da Conta " + conta + " é desconhecido! - Error 500");
-			new ResourceInternalServerErrorException("O Status " + status + " da Conta " + conta + " é desconhecido!");
+			logger.info("O Status " + status + " da Conta " + conta + " e desconhecido");
 			return false;
 		} 
 
@@ -56,12 +65,23 @@ public class ReceitaService {
 		// Simula cenario de erro no serviço (0,1% de erro)
 		long randomError = Math.round(Math.random() * 1000);
 		if (randomError == 500) {
-			log.info("Timeout Server - Error 508");
-			new ResourceTimeOutException("Timeout Server - Error 508");
+			logger.info("Timeout Server - Error 508");
+			new ResourceTimeOutException("Timeout Server");
 			return false;
 		}
 
-		log.info("A Conta " + conta + " esta sincronizada com sucesso na Receita Federal!");
+		logger.info("Enviando a Conta " + conta + " a Receita Federal! Aguarde o retorno do Status!");
 		return true;
+	}
+
+	// Metodo responsável pelo envio dos dados para a Exchange da Mensageria - RabbiMQ
+	public ContaResultado sendMessage(ContaResultado conta) {
+		if (conta != null) {
+			contaSendMessage.sendMessage(conta);
+		} else {
+			logger.info("Nao foi possivel enviar os dados para Sincronizacao com a Receita Federal!");
+			new ResourceInternalServerErrorException("Nao foi possivel enviar os dados para Sincronizacao com a Receita Federal!");
+		}
+		return conta;
 	}
 }

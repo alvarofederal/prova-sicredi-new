@@ -1,0 +1,8 @@
+agencia;conta;saldo;status;resposta_receita
+0101;122256;100.00;A;Valida
+0101;122268;3200.50;A;Valida
+3202;400111;-35.12;I;Valida
+3202;540012;0.00;Z;Invalida
+3202;003212;34500.00;B;Valida
+32022;0033212;34500.00;Y;Invalida
+2;0212;340500.00;A;Invalida

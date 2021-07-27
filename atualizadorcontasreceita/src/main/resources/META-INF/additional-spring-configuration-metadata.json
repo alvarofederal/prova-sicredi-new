@@ -18,5 +18,20 @@
     "name": "sincronizador.rabbitmq.queue",
     "type": "java.lang.String",
     "description": "A description for 'sincronizador.rabbitmq.queue'"
+  },
+  {
+    "name": "atualizador.rabbitmq.exchange",
+    "type": "java.lang.String",
+    "description": "A description for 'atualizador.rabbitmq.exchange'"
+  },
+  {
+    "name": "atualizador.rabbitmq.queue",
+    "type": "java.lang.String",
+    "description": "A description for 'atualizador.rabbitmq.queue'"
+  },
+  {
+    "name": "atualizador.rabbitmq.routingkey",
+    "type": "java.lang.String",
+    "description": "A description for 'atualizador.rabbitmq.routingkey'"
   }
 ]}

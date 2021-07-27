@@ -19,4 +19,7 @@ sincronizador:
     exchange: sincronizador.exchange
     routingkey: sincronizador.conta.routingkey
 
-      
+atualizador:
+  rabbitmq:
+    exchange: atualizador.exchange
+    queue: atualizador.conta.queue 

@@ -24,7 +24,7 @@ public class SincronizacaoController {
 	@PostMapping(produces = {"application/json","application/xml","application/x-yaml"},
 				 consumes = {"application/json","application/xml","application/x-yaml"})
 	public Conta create(@RequestBody Conta conta) {
-		// Metodo preparado para utilização de mensageria pelo uso de uma API
+		// Metodo preparado para utilizacao de mensageria pelo uso de uma API
 		receitaService.sendMessage(conta);
 		return conta;
 	}
